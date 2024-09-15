@@ -47,4 +47,43 @@ class PostController extends Controller
 
         return view('posts.show', compact('post', 'comments'));
     }
+
+    public function edit(Post $post)
+    {
+        // Return the edit view with the post data
+        return view('posts.edit', compact('post'));
+    }
+
+    // Update the specified post in storage
+    public function update(Request $request, Post $post)
+    {
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image
+        ]);
+
+        $data = $request->only('title', 'content');
+        
+        if ($request->hasFile('image')) {
+            // If there's a new image, store it and update the image path
+            $imagePath = $request->file('image')->store('images', 'public');
+            $data['image'] = $imagePath;
+        }
+
+        $post->update($data);
+
+        return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
+    }
+
+    public function destroy(Post $post)
+    {
+        // Check if the authenticated user is an admin and is the same as the user who created the post
+        if (auth()->user()->isAdmin() && auth()->id() === $post->user_id) {
+            $post->delete();
+            return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
+        }
+
+        return redirect()->route('posts.index')->with('error', 'Unauthorized action.');
+    }
 }

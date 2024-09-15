@@ -2,6 +2,8 @@
     <div class="container mt-5">
         <h1 class="page-title mb-4">All Posts</h1>
 
+   
+
         @if($posts->isEmpty())
             <p>No posts available.</p>
         @else
@@ -23,10 +25,18 @@
                                     {{ Str::limit($post->title, 50) }} <!-- Limit title length to 50 characters -->
                                 </h5>
                                 <p class="card-text">
-                                    {{ Str::limit($post->content, 100) }} <!-- Limit content length to 100 characters -->
+                                    {{ Str::limit($post->content, 70) }} <!-- Limit content length to 70 characters -->
                                 </p>
-                                <a href="{{ route('posts.show', $post) }}" class="btn btn-primary mt-auto">Show More</a>
+                                <a href="{{ route('posts.show', $post) }}" class="btn btn-primary mt-2">Show More</a>
+                            
+                                @if(auth()->user()->isAdmin())
+                                    <div class="mt-3"> <!-- Add margin-top to the container holding the buttons -->
+                                        <a href="{{ route('posts.edit', $post) }}" class="btn btn-info me-2">Edit Post</a> <!-- Add margin-end to the first button -->
+                                        <a href="{{ route('posts.destroy', $post) }}" class="btn btn-danger">Delete Post</a> <!-- Note: Ensure the delete route is correct -->
+                                    </div>
+                                @endif
                             </div>
+                            
                             <div class="card-footer text-muted">
                                 By {{ $post->user->name }} on {{ $post->created_at->format('M d, Y') }}
                             </div>

@@ -8,7 +8,19 @@
                 <h5 class="card-title">{{ $post->title }}</h5>
                 <p class="card-text">{{ $post->content }}</p>
                 <div class="card-footer text-muted">
-                    By {{ $post->user->name }} on {{ $post->created_at->format('M d, Y') }}
+                    By <strong>{{ $post->user->name }}</strong> on {{ $post->created_at->format('M d, Y') }}
+                    @auth
+                        @if(auth()->user()->isAdmin() && auth()->id() === $post->user_id)
+                            <div class="float-end">
+                                <a href="{{ route('posts.edit', $post) }}" class="btn btn-warning btn-sm me-2">Edit</a>
+                                <form action="{{ route('posts.destroy', $post) }}" method="POST" class="d-inline-block">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </div>
+                        @endif
+                    @endauth
                 </div>
             </div>
         </div>

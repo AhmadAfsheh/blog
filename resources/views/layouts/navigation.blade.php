@@ -15,6 +15,14 @@
                     <x-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    
+                
+           
+            @if(auth()->user()->isAdmin())
+                    <x-nav-link :href="route('posts.create')" :active="request()->routeIs('posts.create')">
+                        {{ __('Add New Post') }}
+                    </x-nav-link>
+            @endif
                 </div>
             </div>
 

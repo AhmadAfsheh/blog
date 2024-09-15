@@ -2,27 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Card Styles */
 .card-img-top {
-    height: 200px; /* Set a fixed height for images and containers */
+    height: 300px; /* Set a fixed height for images */
     object-fit: cover; /* Ensures images cover the container without distortion */
 }
 
 .card-body {
-    display: flex;
-    flex-direction: column;
-    height: 100%; /* Ensures the card body takes full height of the card */
-}
-
-.card {
-    display: flex;
-    flex-direction: column;
-    height: 100%; /* Ensures the card takes full height */
+    padding: 1.25rem;
 }
 
 .card-footer {
-    text-align: center; /* Center text in the footer */
+    font-size: 0.875rem;
 }
+
+.float-end {
+    float: right;
+}
+
+.btn-sm {
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.me-2 {
+    margin-right: 0.5rem;
+}
+
+.mt-4 {
+    margin-top: 1.5rem;
+}
+
+.mt-2 {
+    margin-top: 0.5rem;
+}
+
+.text-muted {
+    color: #6c757d;
+}
+
 
 /* Pagination Styles */
 .pagination {
@@ -62,3 +79,4 @@
     border: 1px solid #dee2e6;
     cursor: not-allowed;
 }
+
