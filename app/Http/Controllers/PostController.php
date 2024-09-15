@@ -7,8 +7,6 @@ use App\Models\Comment; // Import the Comment model
 
 class PostController extends Controller
 {
-
-    
     public function index()
     {
         // Fetch posts with pagination
@@ -17,10 +15,6 @@ class PostController extends Controller
         return view('posts.index', compact('posts'));
     }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 215197e2fec78c1a42db863ebb907d3d6b3ea460
     public function create()
     {
         return view('posts.create');
@@ -45,7 +39,6 @@ class PostController extends Controller
 
         return redirect()->route('posts.index');
     }
-<<<<<<< HEAD
 
     public function show(Post $post)
     {
@@ -54,6 +47,4 @@ class PostController extends Controller
 
         return view('posts.show', compact('post', 'comments'));
     }
-=======
->>>>>>> 215197e2fec78c1a42db863ebb907d3d6b3ea460
 }
