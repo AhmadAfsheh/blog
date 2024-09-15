@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Card Styles */
+.card-img-top {
+    height: 200px; /* Set a fixed height for images and containers */
+    object-fit: cover; /* Ensures images cover the container without distortion */
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Ensures the card body takes full height of the card */
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Ensures the card takes full height */
+}
+
+.card-footer {
+    text-align: center; /* Center text in the footer */
+}
+
+/* Pagination Styles */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Space above the pagination */
+}
+
+.page-item {
+    margin: 0; /* Reset margin for page items */
+}
+
+.page-link {
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+    color: #007bff;
+    background-color: #fff;
+    padding: 0.5rem 1rem; /* Adjust padding for better spacing */
+    margin: 0 4px; /* Space between pagination buttons */
+    transition: background-color 0.2s, color 0.2s; /* Smooth transition for hover effects */
+}
+
+.page-link:hover {
+    background-color: #e9ecef;
+    color: #0056b3;
+}
+
+.page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+.page-item.disabled .page-link {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    border: 1px solid #dee2e6;
+    cursor: not-allowed;
+}

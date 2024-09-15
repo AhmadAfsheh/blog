@@ -9,8 +9,8 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'content', 'user_id'];
-    
+    protected $fillable = ['title', 'content', 'user_id','image'];
+
     // A post belongs to a user (admin)
     public function user()
     {
