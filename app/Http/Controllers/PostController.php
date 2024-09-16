@@ -29,13 +29,13 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required',
-            'content' => 'required',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'title' => 'required|min:8',
+            'content' => 'required|min:20',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         $data = $request->only('title', 'content');
-        
+
         try {
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('images', 'public');
@@ -44,13 +44,13 @@ class PostController extends Controller
 
             auth()->user()->posts()->create($data);
 
-            // Flash success message
             return redirect()->route('posts.index')->with('success', 'Post created successfully!');
         } catch (\Exception $e) {
-            // Flash failure message
             return redirect()->back()->with('error', 'Failed to create post. Please try again.');
         }
     }
+
+
 
 
     public function show(Post $post)
@@ -70,24 +70,42 @@ class PostController extends Controller
     // Update the specified post in storage
     public function update(Request $request, Post $post)
     {
+        // Validate request data
         $request->validate([
-            'title' => 'required',
-            'content' => 'required',
+            'title' => 'required|string|min:8|max:255',
+            'content' => 'required|string|min:20',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image
         ]);
-
+    
+        // Prepare data for update
         $data = $request->only('title', 'content');
         
-        if ($request->hasFile('image')) {
-            // If there's a new image, store it and update the image path
-            $imagePath = $request->file('image')->store('images', 'public');
-            $data['image'] = $imagePath;
+        try {
+            if ($request->hasFile('image')) {
+                // Delete old image if exists
+                if ($post->image && \Storage::disk('public')->exists($post->image)) {
+                    \Storage::disk('public')->delete($post->image);
+                }
+                
+                // Store new image and update the image path
+                $imagePath = $request->file('image')->store('images', 'public');
+                $data['image'] = $imagePath;
+            }
+    
+            // Update the post
+            $post->update($data);
+    
+            // Redirect with success message
+            return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
+        } catch (\Exception $e) {
+            // Log the exception
+            \Log::error('Post update failed: ' . $e->getMessage());
+    
+            // Redirect with error message
+            return redirect()->back()->with('error', 'Failed to update post. Please try again.');
         }
-
-        $post->update($data);
-
-        return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
     }
+    
 
     public function destroy(Post $post)
     {

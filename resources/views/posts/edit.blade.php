@@ -2,7 +2,7 @@
     <div class="container mt-5">
         <h1 class="page-title mb-4">Edit Post</h1>
 
-        <form action="{{ route('posts.update', $post) }}" method="POST" enctype="multipart/form-data">
+        <form id="postForm" action="{{ route('posts.update', $post) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -19,12 +19,18 @@
             <div class="mb-3">
                 <label for="image" class="form-label">Image</label>
                 <input type="file" id="image" name="image" class="form-control">
+                
                 @if ($post->image)
-                    <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" class="img-fluid mt-2" style="max-height: 200px; object-fit: cover;">
+                    <img id="oldImagePreview" src="{{ asset('storage/' . $post->image) }}" alt="Post Image" class="img-fluid mt-2" style="max-height: 200px; object-fit: cover;">
                 @endif
+
+                <img id="imagePreview" src="#" alt="Image Preview" class="img-fluid mt-2" style="display: none; max-height: 200px; object-fit: cover;">
             </div>
 
             <button type="submit" class="btn btn-primary">Update Post</button>
         </form>
     </div>
+
+    {{-- Include post-form.js for image preview functionality --}}
+    <script src="{{ mix('js/post-form.js') }}"></script>
 </x-app-layout>

@@ -8,6 +8,8 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/css/posts.css',
                 'resources/js/app.js',
+                'resources/js/post-form.js',
+                'resources/js/notifications.js',
             ],
             refresh: true,
         }),

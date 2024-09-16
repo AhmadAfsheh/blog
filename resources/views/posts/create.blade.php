@@ -24,21 +24,26 @@
 
             <div class="mb-3">
                 <label for="image" class="form-label">Post Image (Optional) <span class="text-muted">(Acceptable types: jpeg, png, jpg)</span></label>
+                
+                {{-- File input for new image --}}
                 <input type="file" class="form-control" id="image" name="image">
                 @error('image')
                     <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
-                <img id="imagePreview" src="#" alt="Image Preview" style="display: none; max-width: 100%; margin-top: 10px;">
             </div>
 
             <button type="submit" class="btn btn-primary">Create Post</button>
         </form>
+
+        {{-- Image Preview --}}
+        <div class="mt-4">
+            <img id="imagePreview" src="#" alt="Image Preview" style="display: none; width: 300px; height: 200px; object-fit: cover; margin-top: 10px;">
+            @if(isset($post) && $post->image)
+                <img id="oldImagePreview" src="{{ asset('storage/' . $post->image) }}" alt="Old Image Preview" style="width: 300px; height: 200px; object-fit: cover; margin-top: 10px;">
+            @endif
+        </div>
     </div>
 
-    <!-- jQuery and jQuery Validation Plugin -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.19.3/jquery.validate.min.js"></script>
-
-    <!-- Include the custom JavaScript file -->
-    <script src="{{ asset('js/post-form.js') }}"></script>
+    {{-- Include post-form.js --}}
+    <script src="{{ mix('js/post-form.js') }}"></script>
 </x-app-layout>

@@ -1,29 +1,30 @@
 $(document).ready(function () {
-    // Initialize the validation on the form
+    // Initialize form validation
     $('#postForm').validate({
         rules: {
             title: {
                 required: true,
-                minlength: 8  // Title must be at least 8 characters long
+                minlength: 8
             },
             content: {
-                required: true
+                required: true,
+                minlength: 20
             },
             image: {
-                extension: "jpeg|png|jpg"  // Optional: Ensure the image is of the correct format
+                extension: "jpeg|png|jpg|gif"
             }
         },
         messages: {
             title: {
                 required: "Please enter a title.",
-                minlength: "The title must be at least 8 characters long."
+                minlength: "The title must be at least 8 characters."
             },
             content: {
-                required: "Please enter the content.",
-                minlength: "The title must be at least 20 characters long."
+                required: "Please enter content.",
+                minlength: "The content must be at least 20 characters."
             },
             image: {
-                extension: "Please upload a file with one of the following extensions: jpeg, png, jpg."
+                extension: "Please upload a file with one of the following extensions: jpeg, png, jpg"
             }
         },
         errorElement: 'div',
@@ -36,7 +37,7 @@ $(document).ready(function () {
         }
     });
 
-    // Preview image on file selection
+    // Image preview functionality
     $('#image').on('change', function () {
         var reader = new FileReader();
         reader.onload = function (e) {
@@ -44,4 +45,15 @@ $(document).ready(function () {
         };
         reader.readAsDataURL(this.files[0]);
     });
+
+    // Load old image if exists
+    function loadOldImage(imagePath) {
+        if (imagePath) {
+            $('#imagePreview').attr('src', `/storage/${imagePath}`).show();
+        }
+    }
+
+    // Example: Load old image on page load if image path is available
+    let oldImagePath = '{{ old("image", $post->image ?? "") }}';
+    loadOldImage(oldImagePath);
 });
