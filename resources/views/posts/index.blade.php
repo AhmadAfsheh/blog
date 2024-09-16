@@ -2,7 +2,13 @@
     <div class="container mt-5">
         <h1 class="page-title mb-4">All Posts</h1>
 
-   
+        <!-- Search Form -->
+        <form method="GET" action="{{ route('posts.index') }}" class="mb-4">
+            <div class="input-group">
+                <input type="text" name="search" value="{{ request('search') }}" class="form-control" placeholder="Search posts by title...">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </div>
+        </form>
 
         @if($posts->isEmpty())
             <p>No posts available.</p>
@@ -30,9 +36,13 @@
                                 <a href="{{ route('posts.show', $post) }}" class="btn btn-primary mt-2">Show More</a>
                             
                                 @if(auth()->user()->isAdmin())
-                                    <div class="mt-3"> <!-- Add margin-top to the container holding the buttons -->
-                                        <a href="{{ route('posts.edit', $post) }}" class="btn btn-info me-2">Edit Post</a> <!-- Add margin-end to the first button -->
-                                        <a href="{{ route('posts.destroy', $post) }}" class="btn btn-danger">Delete Post</a> <!-- Note: Ensure the delete route is correct -->
+                                    <div class="mt-3">
+                                        <a href="{{ route('posts.edit', $post) }}" class="btn btn-info me-2">Edit Post</a>
+                                        <form action="{{ route('posts.destroy', $post) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this post?')">Delete Post</button>
+                                        </form>
                                     </div>
                                 @endif
                             </div>
@@ -48,7 +58,7 @@
             <!-- Pagination Links -->
             <div class="d-flex justify-content-center mt-4">
                 <nav aria-label="Page navigation">
-                    {{ $posts->links('pagination::bootstrap-5') }}
+                    {{ $posts->appends(['search' => request('search')])->links('pagination::bootstrap-5') }}
                 </nav>
             </div>
         @endif

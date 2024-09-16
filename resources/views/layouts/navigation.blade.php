@@ -5,8 +5,8 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('posts.index') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                    <a href="/">
+                        <img src="{{ asset('assets/logo-no-background.png') }}" class="block h-24 w-auto" alt="Logo" />
                     </a>
                 </div>
 
@@ -15,14 +15,12 @@
                     <x-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    
-                
-           
-            @if(auth()->user()->isAdmin())
-                    <x-nav-link :href="route('posts.create')" :active="request()->routeIs('posts.create')">
-                        {{ __('Add New Post') }}
-                    </x-nav-link>
-            @endif
+
+                    @if(auth()->user()->isAdmin())
+                        <x-nav-link :href="route('posts.create')" :active="request()->routeIs('posts.create')">
+                            {{ __('Add New Post') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 

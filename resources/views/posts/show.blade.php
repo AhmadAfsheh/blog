@@ -10,7 +10,7 @@
                 <div class="card-footer text-muted">
                     By <strong>{{ $post->user->name }}</strong> on {{ $post->created_at->format('M d, Y') }}
                     @auth
-                        @if(auth()->user()->isAdmin() && auth()->id() === $post->user_id)
+                        @if(auth()->user()->isAdmin())
                             <div class="float-end">
                                 <a href="{{ route('posts.edit', $post) }}" class="btn btn-warning btn-sm me-2">Edit</a>
                                 <form action="{{ route('posts.destroy', $post) }}" method="POST" class="d-inline-block">
@@ -31,19 +31,20 @@
         @else
             <div class="list-group">
                 @foreach($post->comments as $comment)
-                    <div class="list-group-item">
-                        <p>{{ $comment->content }}</p>
-                        <small>
-                            By <strong>{{ $comment->user->name }}</strong> on {{ $comment->created_at->format('M d, Y') }}
-                            @if(auth()->check() && auth()->id() === $comment->user_id)
-                                <form action="{{ route('comments.destroy', $comment) }}" method="POST" class="d-inline-block float-end ms-2">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                </form>
-                            @endif
-                        </small>
-                    </div>
+                <div class="list-group-item">
+                    <p>{{ $comment->content }}</p>
+                    <small>
+                        By <strong>{{ $comment->user->name }}</strong> on {{ $comment->created_at->format('M d, Y') }}
+                        @if(auth()->check() && auth()->id() === $comment->user_id)
+                            <a href="{{ route('comments.edit', $comment) }}" class="btn btn-warning btn-sm float-end ms-2">Edit</a>
+                            <form action="{{ route('comments.destroy', $comment) }}" method="POST" class="d-inline-block float-end ms-2">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        @endif
+                    </small>
+                </div>
                 @endforeach
             </div>
         @endif
@@ -61,4 +62,5 @@
             </div>
         @endauth
     </div>
+
 </x-app-layout>

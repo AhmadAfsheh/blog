@@ -23,7 +23,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="image" class="form-label">Post Image (Optional) <span class="text-muted">(Acceptable types: jpeg, png, jpg, gif)</span></label>
+                <label for="image" class="form-label">Post Image (Optional) <span class="text-muted">(Acceptable types: jpeg, png, jpg)</span></label>
                 <input type="file" class="form-control" id="image" name="image">
                 @error('image')
                     <div class="invalid-feedback d-block">{{ $message }}</div>
