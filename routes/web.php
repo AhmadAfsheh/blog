@@ -33,6 +33,10 @@ Route::middleware('auth')->group(function () {
     // Comments Routes
     Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+    Route::get('/comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
+    Route::patch('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
+
+
 
     // Profile management routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
