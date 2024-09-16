@@ -7,13 +7,19 @@ use App\Models\Comment; // Import the Comment model
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Fetch posts with pagination
-        $posts = Post::paginate(3); // 3 posts per page
+        // Get the search query from the request
+        $search = $request->input('search');
 
-        return view('posts.index', compact('posts'));
+        // Fetch posts with search functionality
+        $posts = Post::when($search, function ($query, $search) {
+            return $query->where('title', 'like', "%{$search}%");
+        })->paginate(3); // Adjust pagination as needed
+
+        return view('posts.index', compact('posts', 'search'));
     }
+
 
     public function create()
     {
@@ -25,20 +31,27 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required',
             'content' => 'required',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $data = $request->only('title', 'content');
         
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images', 'public');
-            $data['image'] = $imagePath;
+        try {
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('images', 'public');
+                $data['image'] = $imagePath;
+            }
+
+            auth()->user()->posts()->create($data);
+
+            // Flash success message
+            return redirect()->route('posts.index')->with('success', 'Post created successfully!');
+        } catch (\Exception $e) {
+            // Flash failure message
+            return redirect()->back()->with('error', 'Failed to create post. Please try again.');
         }
-
-        auth()->user()->posts()->create($data);
-
-        return redirect()->route('posts.index');
     }
+
 
     public function show(Post $post)
     {
@@ -78,12 +91,12 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
-        // Check if the authenticated user is an admin and is the same as the user who created the post
-        if (auth()->user()->isAdmin() && auth()->id() === $post->user_id) {
+
+        if (auth()->user()->isAdmin() ) {
             $post->delete();
             return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
         }
-
+    
         return redirect()->route('posts.index')->with('error', 'Unauthorized action.');
     }
 }
